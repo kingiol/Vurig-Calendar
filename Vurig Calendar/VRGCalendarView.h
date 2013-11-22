@@ -18,10 +18,19 @@
 #define kVRGCalendarViewDayWidth 44
 #define kVRGCalendarViewDayHeight 44
 
+#define kDefaultPreMonthFillColor [UIColor grayColor]
+#define kDefaultNextMonthFillColor [UIColor grayColor]
+#define kDefaultCurrentMonthFillColor [UIColor whiteColor]
+#define kDefaultMarkColor [UIColor purpleColor]
+#define kDefaultSelectedColor [UIColor redColor]
+#define kDefaultTodayColor [UIColor blueColor]
+
+#define kDefaultWeekTitleColor [UIColor colorWithHexString:@"0x383838"]
+
 @protocol VRGCalendarViewDelegate;
 @interface VRGCalendarView : UIView {
     id <VRGCalendarViewDelegate> delegate;
-    
+
     NSDate *currentMonth;
     
     UILabel *labelCurrentMonth;
@@ -47,6 +56,8 @@
 @property (nonatomic, getter = calendarHeight) float calendarHeight;
 @property (nonatomic, strong, getter = selectedDate) NSDate *selectedDate;
 @property (nonatomic, assign) FirstDayOfWeekStyle firstDayOfWeekStyle;
+@property (nonatomic, strong) NSArray *weekTitleColor;
+@property (nonatomic, strong) UIColor *yearAndMonthTitleColor;
 
 -(void)selectDate:(int)date;
 -(void)reset;

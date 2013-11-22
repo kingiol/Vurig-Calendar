@@ -22,12 +22,12 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
-//    calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
+    calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
+    NSArray *ary = @[[UIColor redColor], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [UIColor redColor]];
+    calendar.weekTitleColor = ary;
+    calendar.yearAndMonthTitleColor = [UIColor redColor];
     calendar.delegate=self;
     [self.view addSubview:calendar];
-    
-    
-    
 }
 
 -(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated {
