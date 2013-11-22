@@ -12,8 +12,9 @@
 #import "NSDate+convenience.h"
 #import "KDCalendarHeaders.h"
 
-#define kVRGCalendarViewTopBarHeight 60
+#define kVRGCalendarViewTopYearMonthBarHeight 40
 #define kVRGCalendarViewWidth 320
+#define kVRGCalendarViewTopWeekBarHeight 20
 
 #define kVRGCalendarViewDayWidth 44
 #define kVRGCalendarViewDayHeight 44
@@ -76,5 +77,5 @@
 
 @protocol VRGCalendarViewDelegate <NSObject>
 -(void)calendarView:(VRGCalendarView *)calendarView switchedToDate:(NSDate *)toDate targetHeight:(float)targetHeight animated:(BOOL)animated;
--(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date;
+-(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date isSameDate:(BOOL)isSame;
 @end

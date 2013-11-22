@@ -20,11 +20,12 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
-//    calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
+    calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
     NSArray *ary = @[[UIColor redColor], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [UIColor redColor]];
     calendar.weekTitleColor = ary;
     calendar.yearAndMonthTitleColor = [UIColor redColor];
     calendar.delegate=self;
+//    calendar.frame = CGRectMake(20, 20, 320 - 40, 300);
     [self.view addSubview:calendar];
 }
 
@@ -37,8 +38,8 @@
     }
 }
 
--(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date {
-    NSLog(@"Selected date = %d-%d-%d",[date year], [date month], [date day]);
+-(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date isSameDate:(BOOL)isSame {
+    NSLog(@"Selected date = %d-%d-%d, isSameDate:%@",[date year], [date month], [date day], isSame ?@"YES" : @"NO");
 }
 
 - (void)viewDidUnload

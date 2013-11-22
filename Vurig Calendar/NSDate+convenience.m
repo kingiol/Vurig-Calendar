@@ -148,4 +148,12 @@
     endOfWeek = [gregorian dateFromComponents: componentsStripped];
     return endOfWeek;
 }
+
+- (BOOL)isDayEqualsDay:(NSDate *)otherDate {
+    if ([self year] == [otherDate year] && [self month] == [otherDate month] && [self day] == [otherDate day]) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

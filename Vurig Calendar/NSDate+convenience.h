@@ -24,4 +24,6 @@
 +(NSDate *)dateStartOfWeek;
 +(NSDate *)dateEndOfWeek;
 
+- (BOOL)isDayEqualsDay:(NSDate *)otherDate;
+
 @end
