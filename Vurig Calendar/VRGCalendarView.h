@@ -75,6 +75,6 @@
 @end
 
 @protocol VRGCalendarViewDelegate <NSObject>
--(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated;
+-(void)calendarView:(VRGCalendarView *)calendarView switchedToDate:(NSDate *)toDate targetHeight:(float)targetHeight animated:(BOOL)animated;
 -(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date;
 @end

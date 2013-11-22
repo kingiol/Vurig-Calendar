@@ -8,8 +8,6 @@
 
 #import "VRGViewController.h"
 
-
-
 @interface VRGViewController ()
 
 @end
@@ -22,7 +20,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
-    calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
+//    calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
     NSArray *ary = @[[UIColor redColor], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [UIColor redColor]];
     calendar.weekTitleColor = ary;
     calendar.yearAndMonthTitleColor = [UIColor redColor];
@@ -30,20 +28,18 @@
     [self.view addSubview:calendar];
 }
 
--(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated {
-    if (month==[[NSDate date] month]) {
+
+-(void)calendarView:(VRGCalendarView *)calendarView switchedToDate:(NSDate *)toDate targetHeight:(float)targetHeight animated:(BOOL)animated {
+    
+    if ([toDate month] == [[NSDate date] month]) {
         NSArray *dates = [NSArray arrayWithObjects:[NSNumber numberWithInt:1],[NSNumber numberWithInt:5], nil];
         [calendarView markDates:dates];
     }
 }
 
 -(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date {
-    NSDateFormatter *dateF = [[NSDateFormatter alloc] init];
-    [dateF setDateFormat:@"yyyy-MM-dd"];
-    NSLog(@"Selected date = %@",[dateF stringFromDate:date]);
+    NSLog(@"Selected date = %d-%d-%d",[date year], [date month], [date day]);
 }
-
-
 
 - (void)viewDidUnload
 {

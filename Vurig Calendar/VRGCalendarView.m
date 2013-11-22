@@ -89,7 +89,7 @@
     
     [self updateSize];
 //    [self setNeedsDisplay];
-    [delegate calendarView:self switchedToMonth:[currentMonth month] targetHeight:self.calendarHeight animated:NO];
+    [delegate calendarView:self switchedToDate:currentMonth targetHeight:self.calendarHeight animated:NO];
 }
 
 #pragma mark - Next & Previous
@@ -111,13 +111,13 @@
     
     //New month
     self.currentMonth = [currentMonth offsetMonth:1];
-    if ([delegate respondsToSelector:@selector(calendarView:switchedToMonth:targetHeight: animated:)]) [delegate calendarView:self switchedToMonth:[currentMonth month] targetHeight:self.calendarHeight animated:YES];
+    if ([delegate respondsToSelector:@selector(calendarView:switchedToDate:targetHeight: animated:)]) [delegate calendarView:self switchedToDate:currentMonth targetHeight:self.calendarHeight animated:YES];
     prepAnimationNextMonth=NO;
     [self setNeedsDisplay];
     
     UIImage *imageNextMonth = [self drawCurrentState];
     float targetSize = fmaxf(oldSize, self.calendarHeight);
-    UIView *animationHolder = [[UIView alloc] initWithFrame:CGRectMake(0, kVRGCalendarViewTopBarHeight, kVRGCalendarViewWidth, targetSize-kVRGCalendarViewTopBarHeight)];
+    UIView *animationHolder = [[UIView alloc] initWithFrame:CGRectMake(0, [self privateTopBarHeight], [self privateCalenderWidth], targetSize-[self privateTopBarHeight])];
     [animationHolder setClipsToBounds:YES];
     [self addSubview:animationHolder];
     
@@ -128,7 +128,7 @@
     [animationHolder addSubview:animationView_B];
     
     if (hasNextMonthDays) {
-        animationView_B.frameY = animationView_A.frameY + animationView_A.frameHeight - (kVRGCalendarViewDayHeight+3);
+        animationView_B.frameY = animationView_A.frameY + animationView_A.frameHeight - ([self privateCalendarViewDayHeight]+3);
     } else {
         animationView_B.frameY = animationView_A.frameY + animationView_A.frameHeight -3;
     }
@@ -140,7 +140,7 @@
                          [self updateSize];
                          //blockSafeSelf.frameHeight = 100;
                          if (hasNextMonthDays) {
-                             animationView_A.frameY = -animationView_A.frameHeight + kVRGCalendarViewDayHeight+3;
+                             animationView_A.frameY = -animationView_A.frameHeight + [self privateCalendarViewDayHeight]+3;
                          } else {
                              animationView_A.frameY = -animationView_A.frameHeight + 3;
                          }
@@ -170,13 +170,13 @@
     
     //Prepare next screen
     self.currentMonth = [currentMonth offsetMonth:-1];
-    if ([delegate respondsToSelector:@selector(calendarView:switchedToMonth:targetHeight:animated:)]) [delegate calendarView:self switchedToMonth:[currentMonth month] targetHeight:self.calendarHeight animated:YES];
+    if ([delegate respondsToSelector:@selector(calendarView:switchedToDate:targetHeight:animated:)]) [delegate calendarView:self switchedToDate:currentMonth targetHeight:self.calendarHeight animated:YES];
     prepAnimationPreviousMonth=NO;
     [self setNeedsDisplay];
     UIImage *imagePreviousMonth = [self drawCurrentState];
     
     float targetSize = fmaxf(oldSize, self.calendarHeight);
-    UIView *animationHolder = [[UIView alloc] initWithFrame:CGRectMake(0, kVRGCalendarViewTopBarHeight, kVRGCalendarViewWidth, targetSize-kVRGCalendarViewTopBarHeight)];
+    UIView *animationHolder = [[UIView alloc] initWithFrame:CGRectMake(0, [self privateTopBarHeight], [self privateCalenderWidth], targetSize-[self privateTopBarHeight])];
     
     [animationHolder setClipsToBounds:YES];
     [self addSubview:animationHolder];
@@ -187,7 +187,7 @@
     [animationHolder addSubview:animationView_B];
     
     if (hasPreviousDays) {
-        animationView_B.frameY = animationView_A.frameY - (animationView_B.frameHeight-kVRGCalendarViewDayHeight) + 3;
+        animationView_B.frameY = animationView_A.frameY - (animationView_B.frameHeight-[self privateCalendarViewDayHeight]) + 3;
     } else {
         animationView_B.frameY = animationView_A.frameY - animationView_B.frameHeight + 3;
     }
@@ -198,7 +198,7 @@
                          [self updateSize];
                          
                          if (hasPreviousDays) {
-                             animationView_A.frameY = animationView_B.frameHeight-(kVRGCalendarViewDayHeight+3); 
+                             animationView_A.frameY = animationView_B.frameHeight-([self privateCalendarViewDayHeight]+3); 
                              
                          } else {
                              animationView_A.frameY = animationView_B.frameHeight-3;
@@ -225,12 +225,30 @@
 }
 
 -(float)calendarHeight {
-    return kVRGCalendarViewTopBarHeight + [self numRows]*(kVRGCalendarViewDayHeight+2)+1;
+    return [self privateTopBarHeight] + [self numRows]*([self privateCalendarViewDayHeight]+2)+1;
 }
 
 -(int)numRows {
     float lastBlock = [self.currentMonth numDaysInMonth]+([self.currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle]-1);
     return ceilf(lastBlock/7);
+}
+
+#pragma mark - private size method
+
+- (CGFloat)privateCalenderWidth {
+    return kVRGCalendarViewWidth;
+}
+
+- (CGFloat)privateTopBarHeight {
+    return kVRGCalendarViewTopBarHeight;
+}
+
+- (CGFloat)privateCalendarViewDayWidth {
+    return kVRGCalendarViewDayWidth;
+}
+
+- (CGFloat)privateCalendarViewDayHeight {
+    return kVRGCalendarViewDayHeight;
 }
 
 #pragma mark - Touches
@@ -242,12 +260,12 @@
     self.selectedDate=nil;
     
     //Touch a specific day
-    if (touchPoint.y > kVRGCalendarViewTopBarHeight) {
+    if (touchPoint.y > [self privateTopBarHeight]) {
         float xLocation = touchPoint.x;
-        float yLocation = touchPoint.y-kVRGCalendarViewTopBarHeight;
+        float yLocation = touchPoint.y-[self privateTopBarHeight];
         
-        int column = floorf(xLocation/(kVRGCalendarViewDayWidth+2));
-        int row = floorf(yLocation/(kVRGCalendarViewDayHeight+2));
+        int column = floorf(xLocation/([self privateCalendarViewDayWidth]+2));
+        int row = floorf(yLocation/([self privateCalendarViewDayHeight]+2));
         
         int blockNr = (column+1)+row*7;
         int firstWeekDay = [self.currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle]-1; //-1 because weekdays begin at 1, not 0
@@ -272,7 +290,8 @@
         int currentMonthIndex = [self.currentMonth month];
         int todayMonth = [[NSDate date] month];
         [self reset];
-        if ((todayMonth!=currentMonthIndex) && [delegate respondsToSelector:@selector(calendarView:switchedToMonth:targetHeight:animated:)]) [delegate calendarView:self switchedToMonth:[currentMonth month] targetHeight:self.calendarHeight animated:NO];
+        if ((todayMonth!=currentMonthIndex) && [delegate respondsToSelector:@selector(calendarView:switchedToDate:targetHeight:animated:)])
+            [delegate calendarView:self switchedToDate:currentMonth targetHeight:self.calendarHeight animated:NO];
     }
 }
 
@@ -295,7 +314,7 @@
     CGContextClearRect(UIGraphicsGetCurrentContext(),rect);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGRect rectangle = CGRectMake(0,0,self.frame.size.width,kVRGCalendarViewTopBarHeight);
+    CGRect rectangle = CGRectMake(0,0,self.frame.size.width,[self privateTopBarHeight]);
     CGContextAddRect(context, rectangle);
     CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextFillPath(context);
@@ -347,7 +366,7 @@
         }
         NSString *weekdayValue = (NSString *)[weekdays objectAtIndex:i];
         UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:12];
-        [weekdayValue drawInRect:CGRectMake(i*(kVRGCalendarViewDayWidth+2), 40, kVRGCalendarViewDayWidth+2, 20) withFont:font lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
+        [weekdayValue drawInRect:CGRectMake(i*([self privateCalendarViewDayWidth]+2), 40, [self privateCalendarViewDayWidth]+2, 20) withFont:font lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
     }
     
     int numRows = [self numRows];
@@ -355,8 +374,8 @@
     CGContextSetAllowsAntialiasing(context, NO);
     
     //Grid background
-    float gridHeight = numRows*(kVRGCalendarViewDayHeight+2)+1;
-    CGRect rectangleGrid = CGRectMake(0,kVRGCalendarViewTopBarHeight,self.frame.size.width,gridHeight);
+    float gridHeight = numRows*([self privateCalendarViewDayHeight]+2)+1;
+    CGRect rectangleGrid = CGRectMake(0,[self privateTopBarHeight],self.frame.size.width,gridHeight);
     CGContextAddRect(context, rectangleGrid);
     CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0xf3f3f3"].CGColor);
     //CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0xff0000"].CGColor);
@@ -365,37 +384,38 @@
     //Grid white lines
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextBeginPath(context);
-    CGContextMoveToPoint(context, 0, kVRGCalendarViewTopBarHeight+1);
-    CGContextAddLineToPoint(context, kVRGCalendarViewWidth, kVRGCalendarViewTopBarHeight+1);
+    CGContextMoveToPoint(context, 0, [self privateTopBarHeight]+1);
+    CGContextAddLineToPoint(context, [self privateCalenderWidth], [self privateTopBarHeight]+1);
     for (int i = 1; i<7; i++) {
-        CGContextMoveToPoint(context, i*(kVRGCalendarViewDayWidth+1)+i*1-1, kVRGCalendarViewTopBarHeight);
-        CGContextAddLineToPoint(context, i*(kVRGCalendarViewDayWidth+1)+i*1-1, kVRGCalendarViewTopBarHeight+gridHeight);
+        CGContextMoveToPoint(context, i*([self privateCalendarViewDayWidth]+1)+i*1-1, [self privateTopBarHeight]);
+        CGContextAddLineToPoint(context, i*([self privateCalendarViewDayWidth]+1)+i*1-1, [self privateTopBarHeight]+gridHeight);
         
         if (i>numRows-1) continue;
         //rows
-        CGContextMoveToPoint(context, 0, kVRGCalendarViewTopBarHeight+i*(kVRGCalendarViewDayHeight+1)+i*1+1);
-        CGContextAddLineToPoint(context, kVRGCalendarViewWidth, kVRGCalendarViewTopBarHeight+i*(kVRGCalendarViewDayHeight+1)+i*1+1);
+        CGContextMoveToPoint(context, 0, [self privateTopBarHeight]+i*([self privateCalendarViewDayHeight]+1)+i*1+1);
+        CGContextAddLineToPoint(context, [self privateCalenderWidth], [self privateTopBarHeight]+i*([self privateCalendarViewDayHeight]+1)+i*1+1);
     }
+    
     
     CGContextStrokePath(context);
     
     //Grid dark lines
     CGContextSetStrokeColorWithColor(context, [UIColor colorWithHexString:@"0xcfd4d8"].CGColor);
     CGContextBeginPath(context);
-    CGContextMoveToPoint(context, 0, kVRGCalendarViewTopBarHeight);
-    CGContextAddLineToPoint(context, kVRGCalendarViewWidth, kVRGCalendarViewTopBarHeight);
+    CGContextMoveToPoint(context, 0, [self privateTopBarHeight]);
+    CGContextAddLineToPoint(context, [self privateCalenderWidth], [self privateTopBarHeight]);
     for (int i = 1; i<7; i++) {
         //columns
-        CGContextMoveToPoint(context, i*(kVRGCalendarViewDayWidth+1)+i*1, kVRGCalendarViewTopBarHeight);
-        CGContextAddLineToPoint(context, i*(kVRGCalendarViewDayWidth+1)+i*1, kVRGCalendarViewTopBarHeight+gridHeight);
+        CGContextMoveToPoint(context, i*([self privateCalendarViewDayWidth]+1)+i*1, [self privateTopBarHeight]);
+        CGContextAddLineToPoint(context, i*([self privateCalendarViewDayWidth]+1)+i*1, [self privateTopBarHeight]+gridHeight);
         
         if (i>numRows-1) continue;
         //rows
-        CGContextMoveToPoint(context, 0, kVRGCalendarViewTopBarHeight+i*(kVRGCalendarViewDayHeight+1)+i*1);
-        CGContextAddLineToPoint(context, kVRGCalendarViewWidth, kVRGCalendarViewTopBarHeight+i*(kVRGCalendarViewDayHeight+1)+i*1);
+        CGContextMoveToPoint(context, 0, [self privateTopBarHeight]+i*([self privateCalendarViewDayHeight]+1)+i*1);
+        CGContextAddLineToPoint(context, [self privateCalenderWidth], [self privateTopBarHeight]+i*([self privateCalendarViewDayHeight]+1)+i*1);
     }
-    CGContextMoveToPoint(context, 0, gridHeight+kVRGCalendarViewTopBarHeight);
-    CGContextAddLineToPoint(context, kVRGCalendarViewWidth, gridHeight+kVRGCalendarViewTopBarHeight);
+    CGContextMoveToPoint(context, 0, gridHeight+[self privateTopBarHeight]);
+    CGContextAddLineToPoint(context, [self privateCalenderWidth], gridHeight+[self privateTopBarHeight]);
     
     CGContextStrokePath(context);
     
@@ -450,10 +470,10 @@
         int targetDate = i;
         int targetColumn = i%7;
         int targetRow = i/7;
-        int targetX = targetColumn * (kVRGCalendarViewDayWidth+2);
-        int targetY = kVRGCalendarViewTopBarHeight + targetRow * (kVRGCalendarViewDayHeight+2);
+        int targetX = targetColumn * ([self privateCalendarViewDayWidth]+2);
+        int targetY = [self privateTopBarHeight] + targetRow * ([self privateCalendarViewDayHeight]+2);
         
-        CGRect rectangleGrid = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+1,kVRGCalendarViewDayHeight+1);
+        CGRect rectangleGrid = CGRectMake(targetX,targetY,[self privateCalendarViewDayWidth]+1,[self privateCalendarViewDayHeight]+1);
         CGContextAddRect(context, rectangleGrid);
         NSString *hex = (isSelectedDatePreviousMonth) ? @"0x383838" : @"aaaaaa";
         
@@ -479,7 +499,7 @@
         
         //draw selected date
         if (selectedDate && i==selectedDateBlock) {
-            CGRect rectangleGrid = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
+            CGRect rectangleGrid = CGRectMake(targetX,targetY,[self privateCalendarViewDayWidth]+2,[self privateCalendarViewDayHeight]+2);
             CGContextAddRect(context, rectangleGrid);
             CGContextSetFillColorWithColor(context, kDefaultSelectedColor.CGColor);
             CGContextFillPath(context);
@@ -487,7 +507,7 @@
             CGContextSetFillColorWithColor(context, 
                                            [UIColor whiteColor].CGColor);
         } else if (todayBlock==i) { //today
-            CGRect rectangleGrid = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
+            CGRect rectangleGrid = CGRectMake(targetX,targetY,[self privateCalendarViewDayWidth]+2,[self privateCalendarViewDayHeight]+2);
             CGContextAddRect(context, rectangleGrid);
             CGContextSetFillColorWithColor(context, kDefaultTodayColor.CGColor);
             CGContextFillPath(context);
@@ -496,7 +516,7 @@
                                            [UIColor whiteColor].CGColor);
         }
         
-        [date drawInRect:CGRectMake(targetX+2, targetY+10, kVRGCalendarViewDayWidth, kVRGCalendarViewDayHeight) withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
+        [date drawInRect:CGRectMake(targetX+2, targetY+10, [self privateCalendarViewDayWidth], [self privateCalendarViewDayHeight]) withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
     }
     
     //    CGContextClosePath(context);
@@ -524,15 +544,15 @@
         int targetRow = targetBlock/7;
         
         /*
-        int targetX = targetColumn * (kVRGCalendarViewDayWidth+2) + 7;
-        int targetY = kVRGCalendarViewTopBarHeight + targetRow * (kVRGCalendarViewDayHeight+2) + 38;
+        int targetX = targetColumn * ([self privateCalendarViewDayWidth]+2) + 7;
+        int targetY = [self privateTopBarHeight] + targetRow * ([self privateCalendarViewDayHeight]+2) + 38;
         
         CGRect rectangle = CGRectMake(targetX,targetY,32,2);
         CGContextAddRect(context, rectangle);
          */
-        int targetX = targetColumn * (kVRGCalendarViewDayWidth+2);
-        int targetY = kVRGCalendarViewTopBarHeight + targetRow * (kVRGCalendarViewDayHeight+2);
-        CGRect rectangle = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
+        int targetX = targetColumn * ([self privateCalendarViewDayWidth]+2);
+        int targetY = [self privateTopBarHeight] + targetRow * ([self privateCalendarViewDayHeight]+2);
+        CGRect rectangle = CGRectMake(targetX,targetY,[self privateCalendarViewDayWidth]+2,[self privateCalendarViewDayHeight]+2);
         CGContextAddRect(context, rectangle);
         
         UIColor *color;
@@ -551,17 +571,17 @@
         CGContextSetFillColorWithColor(context,
                                        [UIColor whiteColor].CGColor);
         NSString *date = [NSString stringWithFormat:@"%i",targetDate];
-        [date drawInRect:CGRectMake(targetX+2, targetY+10, kVRGCalendarViewDayWidth, kVRGCalendarViewDayHeight) withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
+        [date drawInRect:CGRectMake(targetX+2, targetY+10, [self privateCalendarViewDayWidth], [self privateCalendarViewDayHeight]) withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
     }
 }
 
 #pragma mark - Draw image for animation
 -(UIImage *)drawCurrentState {
-    float targetHeight = kVRGCalendarViewTopBarHeight + [self numRows]*(kVRGCalendarViewDayHeight+2)+1;
+    float targetHeight = [self privateTopBarHeight] + [self numRows]*([self privateCalendarViewDayHeight]+2)+1;
     
-    UIGraphicsBeginImageContext(CGSizeMake(kVRGCalendarViewWidth, targetHeight-kVRGCalendarViewTopBarHeight));
+    UIGraphicsBeginImageContext(CGSizeMake([self privateCalenderWidth], targetHeight-[self privateTopBarHeight]));
     CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(c, 0, -kVRGCalendarViewTopBarHeight);    // <-- shift everything up by 40px when drawing.
+    CGContextTranslateCTM(c, 0, -[self privateTopBarHeight]);    // <-- shift everything up by 40px when drawing.
     [self.layer renderInContext:c];
     UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -570,14 +590,14 @@
 
 #pragma mark - Init
 -(id)init {
-    self = [super initWithFrame:CGRectMake(0, 0, kVRGCalendarViewWidth, 0)];
+    self = [super initWithFrame:CGRectMake(0, 0, [self privateCalenderWidth], 0)];
     if (self) {
         self.contentMode = UIViewContentModeTop;
         self.clipsToBounds=YES;
         self.firstDayOfWeekStyle = FirstDayOfWeekStyleMonday;
         
         isAnimating=NO;
-        self.labelCurrentMonth = [[UILabel alloc] initWithFrame:CGRectMake(34, 0, kVRGCalendarViewWidth-68, 40)];
+        self.labelCurrentMonth = [[UILabel alloc] initWithFrame:CGRectMake(34, 0, [self privateCalenderWidth]-68, 40)];
         [self addSubview:labelCurrentMonth];
         labelCurrentMonth.backgroundColor=[UIColor whiteColor];
         labelCurrentMonth.font = [UIFont systemFontOfSize:17];//[UIFont fontWithName:@"HelveticaNeue-Bold" size:17];
