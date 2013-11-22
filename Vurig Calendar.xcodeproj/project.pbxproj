@@ -23,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		62E50057183F270500418603 /* KDCalendarHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarHeaders.h; sourceTree = "<group>"; };
 		93597E56157523D0004AE766 /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
 		93597E57157523D0004AE766 /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
 		93597E5A157523EF004AE766 /* NSMutableArray+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+convenience.h"; sourceTree = "<group>"; };
@@ -127,6 +128,7 @@
 				93597E57157523D0004AE766 /* NSDate+convenience.m */,
 				93664B071575237F004EBE25 /* UIColor+expanded.h */,
 				93664B0915752385004EBE25 /* UIColor+expanded.m */,
+				62E50057183F270500418603 /* KDCalendarHeaders.h */,
 			);
 			name = calendar;
 			sourceTree = "<group>";

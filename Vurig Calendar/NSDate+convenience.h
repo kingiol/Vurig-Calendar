@@ -7,13 +7,15 @@
 
 #import <Foundation/Foundation.h>
 
+#import "KDCalendarHeaders.h"
+
 @interface NSDate (Convenience)
 
 -(NSDate *)offsetMonth:(int)numMonths;
 -(NSDate *)offsetDay:(int)numDays;
 -(NSDate *)offsetHours:(int)hours;
 -(int)numDaysInMonth;
--(int)firstWeekDayInMonth;
+-(int)firstWeekDayInMonth:(FirstDayOfWeekStyle)firstDayOfWeekStyle;
 -(int)year;
 -(int)month;
 -(int)day;

@@ -22,7 +22,7 @@
     NSDateComponents *comps = [gregorian components:NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit fromDate:self.currentMonth];
     [comps setDay:date];
     self.selectedDate = [gregorian dateFromComponents:comps];
-    
+
     int selectedDateYear = [selectedDate year];
     int selectedDateMonth = [selectedDate month];
     int currentMonthYear = [currentMonth year];
@@ -77,7 +77,7 @@
     self.currentMonth = [gregorian dateFromComponents:components]; //clean month
     
     [self updateSize];
-    [self setNeedsDisplay];
+//    [self setNeedsDisplay];
     [delegate calendarView:self switchedToMonth:[currentMonth month] targetHeight:self.calendarHeight animated:NO];
 }
 
@@ -90,7 +90,7 @@
     
     [self setNeedsDisplay];
     
-    int lastBlock = [currentMonth firstWeekDayInMonth]+[currentMonth numDaysInMonth]-1;
+    int lastBlock = [currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle]+[currentMonth numDaysInMonth]-1;
     int numBlocks = [self numRows]*7;
     BOOL hasNextMonthDays = lastBlock<numBlocks;
     
@@ -154,7 +154,7 @@
     //Prepare current screen
     prepAnimationPreviousMonth = YES;
     [self setNeedsDisplay];
-    BOOL hasPreviousDays = [currentMonth firstWeekDayInMonth]>1;
+    BOOL hasPreviousDays = [currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle]>1;
     float oldSize = self.calendarHeight;
     UIImage *imageCurrentMonth = [self drawCurrentState];
     
@@ -220,7 +220,7 @@
 }
 
 -(int)numRows {
-    float lastBlock = [self.currentMonth numDaysInMonth]+([self.currentMonth firstWeekDayInMonth]-1);
+    float lastBlock = [self.currentMonth numDaysInMonth]+([self.currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle]-1);
     return ceilf(lastBlock/7);
 }
 
@@ -241,7 +241,7 @@
         int row = floorf(yLocation/(kVRGCalendarViewDayHeight+2));
         
         int blockNr = (column+1)+row*7;
-        int firstWeekDay = [self.currentMonth firstWeekDayInMonth]-1; //-1 because weekdays begin at 1, not 0
+        int firstWeekDay = [self.currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle]-1; //-1 because weekdays begin at 1, not 0
         int date = blockNr-firstWeekDay;
         [self selectDate:date];
         return;
@@ -270,16 +270,22 @@
 #pragma mark - Drawing
 - (void)drawRect:(CGRect)rect
 {
-    int firstWeekDay = [self.currentMonth firstWeekDayInMonth]-1; //-1 because weekdays begin at 1, not 0
+    int firstWeekDay = [self.currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle] - 1;
+//    if (self.firstDayOfWeekStyle == FirstDayOfWeekStyleMonday) {
+//        firstWeekDay -= 1; //-1 because weekdays begin at 1, not 0
+//    }else {
+//        firstWeekDay %= 7;
+//    }
+    NSLog(@"kingiol ----> firstWeekDay: %d", firstWeekDay);
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MMMM yyyy"];
+    [formatter setDateFormat:@"yyyy年MMM"];
     labelCurrentMonth.text = [formatter stringFromDate:self.currentMonth];
     [labelCurrentMonth sizeToFit];
     labelCurrentMonth.frameX = roundf(self.frame.size.width/2 - labelCurrentMonth.frameWidth/2);
     labelCurrentMonth.frameY = 10;
     [formatter release];
-    [currentMonth firstWeekDayInMonth];
+    [currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle];
     
     CGContextClearRect(UIGraphicsGetCurrentContext(),rect);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -321,7 +327,9 @@
     dateFormatter.dateFormat=@"EEE";
     //always assume gregorian with monday first
     NSMutableArray *weekdays = [[NSMutableArray alloc] initWithArray:[dateFormatter shortWeekdaySymbols]];
-    [weekdays moveObjectFromIndex:0 toIndex:6];
+    if (self.firstDayOfWeekStyle == FirstDayOfWeekStyleMonday) {
+        [weekdays moveObjectFromIndex:0 toIndex:6];
+    }
     
     CGContextSetFillColorWithColor(context, 
                                    [UIColor colorWithHexString:@"0x383838"].CGColor);
@@ -522,6 +530,7 @@
         CGContextSetFillColorWithColor(context, color.CGColor);
         CGContextFillPath(context);
     }
+    NSLog(@"end");
 }
 
 #pragma mark - Draw image for animation
@@ -543,6 +552,7 @@
     if (self) {
         self.contentMode = UIViewContentModeTop;
         self.clipsToBounds=YES;
+        self.firstDayOfWeekStyle = FirstDayOfWeekStyleMonday;
         
         isAnimating=NO;
         self.labelCurrentMonth = [[UILabel alloc] initWithFrame:CGRectMake(34, 0, kVRGCalendarViewWidth-68, 40)];
@@ -553,7 +563,7 @@
         labelCurrentMonth.textAlignment = UITextAlignmentCenter;
         
         [self performSelector:@selector(reset) withObject:nil afterDelay:0.1]; //so delegate can be set after init and still get called on init
-        //        [self reset];
+//        [self reset];
     }
     return self;
 }

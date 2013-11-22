@@ -22,6 +22,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
+//    calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
     calendar.delegate=self;
     [self.view addSubview:calendar];
     
@@ -37,7 +38,9 @@
 }
 
 -(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date {
-    NSLog(@"Selected date = %@",date);
+    NSDateFormatter *dateF = [[NSDateFormatter alloc] init];
+    [dateF setDateFormat:@"yyyy-MM-dd"];
+    NSLog(@"Selected date = %@",[dateF stringFromDate:date]);
 }
 
 

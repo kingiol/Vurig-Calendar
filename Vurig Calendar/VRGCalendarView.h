@@ -9,6 +9,8 @@
 
 #import <UIKit/UIKit.h>
 #import "UIColor+expanded.h"
+#import "NSDate+convenience.h"
+#import "KDCalendarHeaders.h"
 
 #define kVRGCalendarViewTopBarHeight 60
 #define kVRGCalendarViewWidth 320
@@ -44,6 +46,7 @@
 @property (nonatomic, retain) NSArray *markedColors;
 @property (nonatomic, getter = calendarHeight) float calendarHeight;
 @property (nonatomic, retain, getter = selectedDate) NSDate *selectedDate;
+@property (nonatomic, assign) FirstDayOfWeekStyle firstDayOfWeekStyle;
 
 -(void)selectDate:(int)date;
 -(void)reset;

@@ -31,11 +31,15 @@
     return [components day];
 }
 
--(int)firstWeekDayInMonth {
+-(int)firstWeekDayInMonth:(FirstDayOfWeekStyle)firstDayOfWeekStyle {
     NSCalendar *gregorian = [[NSCalendar alloc]
                              initWithCalendarIdentifier:NSGregorianCalendar];
-    [gregorian setFirstWeekday:2]; //monday is first day
-    //[gregorian setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"nl_NL"]];
+    if (firstDayOfWeekStyle == FirstDayOfWeekStyleSunday) {
+        [gregorian setFirstWeekday:1];
+    }else {
+        [gregorian setFirstWeekday:2]; //monday is first day
+        //[gregorian setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"nl_NL"]];
+    }
     
     //Set date to first of month
     NSDateComponents *comps = [gregorian components:NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit fromDate:self];
@@ -43,6 +47,7 @@
     NSDate *newDate = [gregorian dateFromComponents:comps];
 
     return [gregorian ordinalityOfUnit:NSWeekdayCalendarUnit inUnit:NSWeekCalendarUnit forDate:newDate];
+    
 }
 
 -(NSDate *)offsetMonth:(int)numMonths {
