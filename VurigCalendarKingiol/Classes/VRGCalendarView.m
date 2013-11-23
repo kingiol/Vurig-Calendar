@@ -459,7 +459,7 @@
         }
         NSString *weekdayValue = (NSString *)[weekdays objectAtIndex:i];
         UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:12];
-        [weekdayValue drawInRect:CGRectMake(i*([self privateCalendarViewDayWidth]+2), [self privateTopYearMonthHeight] + 1, [self privateCalendarViewDayWidth]+2, [self privateTopWeekBarHeight]) withFont:font lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
+        [weekdayValue drawInRect:CGRectMake(i*([self privateCalendarViewDayWidth]+2), [self privateTopYearMonthHeight] + 1, [self privateCalendarViewDayWidth]+2, [self privateTopWeekBarHeight]) withFont:font lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
     }
 
     //Grid white lines
@@ -595,7 +595,7 @@
                                            [UIColor whiteColor].CGColor);
         }
         
-        [date drawInRect:CGRectMake(targetX+2, targetY+10, [self privateCalendarViewDayWidth], [self privateCalendarViewDayHeight]) withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
+        [date drawInRect:CGRectMake(targetX+2, targetY+10, [self privateCalendarViewDayWidth], [self privateCalendarViewDayHeight]) withFont:[UIFont systemFontOfSize:17] lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
     }
     
     //    CGContextClosePath(context);
@@ -649,7 +649,7 @@
         CGContextSetFillColorWithColor(context,
                                        [UIColor whiteColor].CGColor);
         NSString *date = [NSString stringWithFormat:@"%i",targetDate];
-        [date drawInRect:CGRectMake(targetX+2, targetY+10, [self privateCalendarViewDayWidth], [self privateCalendarViewDayHeight]) withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
+        [date drawInRect:CGRectMake(targetX+2, targetY+10, [self privateCalendarViewDayWidth], [self privateCalendarViewDayHeight]) withFont:[UIFont systemFontOfSize:17] lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
     }
 }
 
@@ -691,7 +691,7 @@
         labelCurrentMonth.backgroundColor=[UIColor whiteColor];
         labelCurrentMonth.font = [UIFont systemFontOfSize:17];//[UIFont fontWithName:@"HelveticaNeue-Bold" size:17];
         labelCurrentMonth.textColor = [UIColor colorWithHexString:@"0x383838"];
-        labelCurrentMonth.textAlignment = UITextAlignmentCenter;
+        labelCurrentMonth.textAlignment = NSTextAlignmentCenter;
     }else {
         [labelCurrentMonth removeFromSuperview];
     }
