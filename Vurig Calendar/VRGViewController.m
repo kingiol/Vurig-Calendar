@@ -26,10 +26,9 @@
     NSArray *ary = @[[UIColor redColor], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [UIColor redColor]];
     calendar.weekTitleColor = ary;
     calendar.yearAndMonthTitleColor = [UIColor redColor];
-    calendar.hidenYearMonthTitle = YES;
+//    calendar.hidenYearMonthTitle = YES;
     calendar.delegate=self;
     calendar.selectDayWithAnimation = NO;
-//    calendar.frame = CGRectMake(20, 20, 320 - 40, 300);
     [self.view addSubview:calendar];
     
     UIButton *preBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 400, 50, 20)];

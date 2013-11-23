@@ -375,8 +375,6 @@
 - (void)drawRect:(CGRect)rect
 {
     
-    NSLog(@"frame : %@", NSStringFromCGRect(self.frame));
-    
     int firstWeekDay = [self.currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle] - 1;
     
     //clear the view context
@@ -676,7 +674,7 @@
         self.clipsToBounds=YES;
         self.firstDayOfWeekStyle = FirstDayOfWeekStyleMonday;
         self.selectDayWithAnimation = YES;
-        _hidenYearMonthTitle = NO;
+        self.hidenYearMonthTitle = NO;
         
         isAnimating=NO;
         
@@ -694,6 +692,8 @@
         labelCurrentMonth.font = [UIFont systemFontOfSize:17];//[UIFont fontWithName:@"HelveticaNeue-Bold" size:17];
         labelCurrentMonth.textColor = [UIColor colorWithHexString:@"0x383838"];
         labelCurrentMonth.textAlignment = UITextAlignmentCenter;
+    }else {
+        [labelCurrentMonth removeFromSuperview];
     }
     _hidenYearMonthTitle = hidenYearMonthTitle;
 }

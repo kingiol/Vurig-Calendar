@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		93597E58157523D0004AE766 /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 93597E57157523D0004AE766 /* NSDate+convenience.m */; };
-		93597E5C157523EF004AE766 /* NSMutableArray+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 93597E5B157523EF004AE766 /* NSMutableArray+convenience.m */; };
-		93597E5F15752414004AE766 /* UIView+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 93597E5E15752414004AE766 /* UIView+convenience.m */; };
-		93597E6015752447004AE766 /* UIColor+expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 93664B0915752385004EBE25 /* UIColor+expanded.m */; };
+		627D796B1840A1E000EAE762 /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 627D79621840A1E000EAE762 /* NSDate+convenience.m */; };
+		627D796C1840A1E000EAE762 /* NSMutableArray+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 627D79641840A1E000EAE762 /* NSMutableArray+convenience.m */; };
+		627D796D1840A1E000EAE762 /* UIColor+expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 627D79661840A1E000EAE762 /* UIColor+expanded.m */; };
+		627D796E1840A1E000EAE762 /* UIView+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 627D79681840A1E000EAE762 /* UIView+convenience.m */; };
+		627D796F1840A1E000EAE762 /* VRGCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 627D796A1840A1E000EAE762 /* VRGCalendarView.m */; };
 		93664AE5157522C0004EBE25 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93664AE4157522C0004EBE25 /* UIKit.framework */; };
 		93664AE7157522C0004EBE25 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93664AE6157522C0004EBE25 /* Foundation.framework */; };
 		93664AE9157522C0004EBE25 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93664AE8157522C0004EBE25 /* CoreGraphics.framework */; };
@@ -19,17 +20,20 @@
 		93664AF5157522C0004EBE25 /* VRGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93664AF4157522C0004EBE25 /* VRGAppDelegate.m */; };
 		93664AF8157522C0004EBE25 /* VRGViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93664AF7157522C0004EBE25 /* VRGViewController.m */; };
 		93664AFB157522C0004EBE25 /* VRGViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93664AF9157522C0004EBE25 /* VRGViewController.xib */; };
-		93664B05157522F1004EBE25 /* VRGCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93664B04157522F1004EBE25 /* VRGCalendarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		62E50057183F270500418603 /* KDCalendarHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarHeaders.h; sourceTree = "<group>"; };
-		93597E56157523D0004AE766 /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
-		93597E57157523D0004AE766 /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
-		93597E5A157523EF004AE766 /* NSMutableArray+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+convenience.h"; sourceTree = "<group>"; };
-		93597E5B157523EF004AE766 /* NSMutableArray+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+convenience.m"; sourceTree = "<group>"; };
-		93597E5D15752414004AE766 /* UIView+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+convenience.h"; sourceTree = "<group>"; };
-		93597E5E15752414004AE766 /* UIView+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+convenience.m"; sourceTree = "<group>"; };
+		627D79601840A1E000EAE762 /* KDCalendarHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarHeaders.h; sourceTree = "<group>"; };
+		627D79611840A1E000EAE762 /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
+		627D79621840A1E000EAE762 /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
+		627D79631840A1E000EAE762 /* NSMutableArray+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+convenience.h"; sourceTree = "<group>"; };
+		627D79641840A1E000EAE762 /* NSMutableArray+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+convenience.m"; sourceTree = "<group>"; };
+		627D79651840A1E000EAE762 /* UIColor+expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+expanded.h"; sourceTree = "<group>"; };
+		627D79661840A1E000EAE762 /* UIColor+expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+expanded.m"; sourceTree = "<group>"; };
+		627D79671840A1E000EAE762 /* UIView+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+convenience.h"; sourceTree = "<group>"; };
+		627D79681840A1E000EAE762 /* UIView+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+convenience.m"; sourceTree = "<group>"; };
+		627D79691840A1E000EAE762 /* VRGCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRGCalendarView.h; sourceTree = "<group>"; };
+		627D796A1840A1E000EAE762 /* VRGCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRGCalendarView.m; sourceTree = "<group>"; };
 		93664AE0157522BF004EBE25 /* Vurig Calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vurig Calendar.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93664AE4157522C0004EBE25 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		93664AE6157522C0004EBE25 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -43,10 +47,6 @@
 		93664AF6157522C0004EBE25 /* VRGViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VRGViewController.h; sourceTree = "<group>"; };
 		93664AF7157522C0004EBE25 /* VRGViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VRGViewController.m; sourceTree = "<group>"; };
 		93664AFA157522C0004EBE25 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VRGViewController.xib; sourceTree = "<group>"; };
-		93664B03157522F1004EBE25 /* VRGCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRGCalendarView.h; sourceTree = "<group>"; };
-		93664B04157522F1004EBE25 /* VRGCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRGCalendarView.m; sourceTree = "<group>"; };
-		93664B071575237F004EBE25 /* UIColor+expanded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+expanded.h"; sourceTree = "<group>"; };
-		93664B0915752385004EBE25 /* UIColor+expanded.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+expanded.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,9 +63,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		627D795E1840A1E000EAE762 /* VurigCalendarKingiol */ = {
+			isa = PBXGroup;
+			children = (
+				627D795F1840A1E000EAE762 /* Classes */,
+			);
+			path = VurigCalendarKingiol;
+			sourceTree = "<group>";
+		};
+		627D795F1840A1E000EAE762 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				627D79601840A1E000EAE762 /* KDCalendarHeaders.h */,
+				627D79611840A1E000EAE762 /* NSDate+convenience.h */,
+				627D79621840A1E000EAE762 /* NSDate+convenience.m */,
+				627D79631840A1E000EAE762 /* NSMutableArray+convenience.h */,
+				627D79641840A1E000EAE762 /* NSMutableArray+convenience.m */,
+				627D79651840A1E000EAE762 /* UIColor+expanded.h */,
+				627D79661840A1E000EAE762 /* UIColor+expanded.m */,
+				627D79671840A1E000EAE762 /* UIView+convenience.h */,
+				627D79681840A1E000EAE762 /* UIView+convenience.m */,
+				627D79691840A1E000EAE762 /* VRGCalendarView.h */,
+				627D796A1840A1E000EAE762 /* VRGCalendarView.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		93664AD5157522BF004EBE25 = {
 			isa = PBXGroup;
 			children = (
+				627D795E1840A1E000EAE762 /* VurigCalendarKingiol */,
 				93664AEA157522C0004EBE25 /* Vurig Calendar */,
 				93664AE3157522BF004EBE25 /* Frameworks */,
 				93664AE1157522BF004EBE25 /* Products */,
@@ -93,7 +120,6 @@
 		93664AEA157522C0004EBE25 /* Vurig Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				93664B06157522F2004EBE25 /* calendar */,
 				93664AF3157522C0004EBE25 /* VRGAppDelegate.h */,
 				93664AF4157522C0004EBE25 /* VRGAppDelegate.m */,
 				93664AF6157522C0004EBE25 /* VRGViewController.h */,
@@ -113,24 +139,6 @@
 				93664AF2157522C0004EBE25 /* Vurig Calendar-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		93664B06157522F2004EBE25 /* calendar */ = {
-			isa = PBXGroup;
-			children = (
-				93664B03157522F1004EBE25 /* VRGCalendarView.h */,
-				93664B04157522F1004EBE25 /* VRGCalendarView.m */,
-				93597E5D15752414004AE766 /* UIView+convenience.h */,
-				93597E5E15752414004AE766 /* UIView+convenience.m */,
-				93597E5A157523EF004AE766 /* NSMutableArray+convenience.h */,
-				93597E5B157523EF004AE766 /* NSMutableArray+convenience.m */,
-				93597E56157523D0004AE766 /* NSDate+convenience.h */,
-				93597E57157523D0004AE766 /* NSDate+convenience.m */,
-				93664B071575237F004EBE25 /* UIColor+expanded.h */,
-				93664B0915752385004EBE25 /* UIColor+expanded.m */,
-				62E50057183F270500418603 /* KDCalendarHeaders.h */,
-			);
-			name = calendar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,14 +205,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				627D796F1840A1E000EAE762 /* VRGCalendarView.m in Sources */,
 				93664AF1157522C0004EBE25 /* main.m in Sources */,
 				93664AF5157522C0004EBE25 /* VRGAppDelegate.m in Sources */,
+				627D796D1840A1E000EAE762 /* UIColor+expanded.m in Sources */,
+				627D796B1840A1E000EAE762 /* NSDate+convenience.m in Sources */,
+				627D796C1840A1E000EAE762 /* NSMutableArray+convenience.m in Sources */,
+				627D796E1840A1E000EAE762 /* UIView+convenience.m in Sources */,
 				93664AF8157522C0004EBE25 /* VRGViewController.m in Sources */,
-				93664B05157522F1004EBE25 /* VRGCalendarView.m in Sources */,
-				93597E58157523D0004AE766 /* NSDate+convenience.m in Sources */,
-				93597E5C157523EF004AE766 /* NSMutableArray+convenience.m in Sources */,
-				93597E5F15752414004AE766 /* UIView+convenience.m in Sources */,
-				93597E6015752447004AE766 /* UIColor+expanded.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
