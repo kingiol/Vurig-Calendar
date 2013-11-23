@@ -13,6 +13,7 @@ Also animated :-)
 * custom yearAndMonthTitleColor
 * change select date with animation
 * show or hiden yearMonthTitleView
+* support for ARC
 
 ### Installation
 Copy the files from the calendar group to your own project.
