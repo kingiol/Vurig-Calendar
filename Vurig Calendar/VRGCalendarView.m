@@ -50,7 +50,39 @@
         if (self.preSelectDate != nil && [self.preSelectDate isDayEqualsDay:self.selectedDate]) {
             isSame = YES;
         }else {
-            [self setNeedsDisplay];
+            if (CGRectEqualToRect(self.preSelectDateRect, CGRectZero)) {
+                [self setNeedsDisplay];
+            }else {
+                if (self.selectDayWithAnimation) {
+                    UIView *preView = [[UIView alloc] initWithFrame:self.preSelectDateRect];
+                    preView.backgroundColor = kDefaultCurrentMonthFillColor;
+                    UILabel *preDateLabel = [[UILabel alloc] init];
+                    preDateLabel.backgroundColor = [UIColor clearColor];
+                    preDateLabel.textColor = [UIColor blackColor];
+                    preDateLabel.font = [UIFont systemFontOfSize:17];
+                    preDateLabel.text = [NSString stringWithFormat:@"%d", [self.preSelectDate day]];
+                    [preDateLabel sizeToFit];
+                    preDateLabel.center = CGPointMake(preView.frameWidth/2, preView.frameHeight/2);
+                    [preView addSubview:preDateLabel];
+                    [self addSubview:preView];
+                    
+                    UIView *selView = [[UIView alloc] initWithFrame:self.preSelectDateRect];
+                    selView.backgroundColor = kDefaultSelectedColor;
+                    [self addSubview:selView];
+                    
+                    [UIView animateWithDuration:0.2
+                                     animations:^{
+                                         selView.center = CGPointMake(CGRectGetMidX(self.selectDateRect), CGRectGetMidY(self.selectDateRect));
+                                     } completion:^(BOOL finished) {
+                                         [preView removeFromSuperview];
+                                         [selView removeFromSuperview];
+                                         [self setNeedsDisplay];
+                                     }];
+                }else {
+                    [self setNeedsDisplay];
+                }
+            }
+            
         }
     }
     
@@ -109,6 +141,10 @@
 #pragma mark - Next & Previous
 -(void)showNextMonth {
     if (isAnimating) return;
+    self.preSelectDate = nil;
+    self.preSelectDateRect = CGRectZero;
+    self.selectedDate = nil;
+    self.selectDateRect = CGRectZero;
     self.markedDates=nil;
     isAnimating=YES;
     prepAnimationNextMonth=YES;
@@ -173,6 +209,10 @@
 
 -(void)showPreviousMonth {
     if (isAnimating) return;
+    self.preSelectDate = nil;
+    self.preSelectDateRect = CGRectZero;
+    self.selectedDate = nil;
+    self.selectDateRect = CGRectZero;
     isAnimating=YES;
     self.markedDates=nil;
     //Prepare current screen
@@ -258,7 +298,7 @@
 }
 
 - (CGFloat)privateTopYearMonthHeight {
-    return kVRGCalendarViewTopYearMonthBarHeight;
+    return self.hidenYearMonthTitle ? 0.0f : kVRGCalendarViewTopYearMonthBarHeight;
 }
 
 - (CGFloat)privateTopWeekBarHeight {
@@ -280,9 +320,7 @@
     CGPoint touchPoint = [touch locationInView:self];
     
 //    self.selectedDate=nil;
-    
-    
-    
+
     //Touch a specific day
     if (touchPoint.y > [self privateTopHeadHeight]) {
         float xLocation = touchPoint.x;
@@ -294,12 +332,25 @@
         int blockNr = (column+1)+row*7;
         int firstWeekDay = [self.currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle]-1; //-1 because weekdays begin at 1, not 0
         int date = blockNr-firstWeekDay;
+        
+        
+        int targetColumn = column;
+        int targetRow = row;
+        int targetX = targetColumn * ([self privateCalendarViewDayWidth]+1);
+        int targetY = [self privateTopHeadHeight] + targetRow * ([self privateCalendarViewDayHeight]+1);
+        
+        CGRect rectangleGrid = CGRectMake(targetX,targetY,[self privateCalendarViewDayWidth]+1,[self privateCalendarViewDayHeight]+1);
+        self.preSelectDateRect = self.selectDateRect;
+        self.selectDateRect = rectangleGrid;
+        
         [self selectDate:date];
         return;
     }
     
     self.markedDates=nil;
     self.markedColors=nil;  
+    
+    if (self.hidenYearMonthTitle) return;
     
     CGRect rectArrowLeft = CGRectMake(0, 0, 50, 40);
     CGRect rectArrowRight = CGRectMake(self.frame.size.width-50, 0, 50, 40);
@@ -327,49 +378,53 @@
     
     int firstWeekDay = [self.currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle] - 1;
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy年MMM"];
-    labelCurrentMonth.text = [formatter stringFromDate:self.currentMonth];
-    [labelCurrentMonth sizeToFit];
-    labelCurrentMonth.frameX = roundf(self.frame.size.width/2 - labelCurrentMonth.frameWidth/2);
-    labelCurrentMonth.frameY = 10;
-    [currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle];
-    
+    //clear the view context
     CGContextClearRect(UIGraphicsGetCurrentContext(),rect);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGRect rectangle = CGRectMake(0,0,self.frame.size.width,[self privateTopHeadHeight]);
-    CGContextAddRect(context, rectangle);
-    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
-    CGContextFillPath(context);
+    if (!self.hidenYearMonthTitle) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy MMM"];
+        labelCurrentMonth.text = [formatter stringFromDate:self.currentMonth];
+        [labelCurrentMonth sizeToFit];
+        labelCurrentMonth.frameX = roundf(self.frame.size.width/2 - labelCurrentMonth.frameWidth/2);
+        labelCurrentMonth.frameY = 10;
+        
+        CGRect rectangle = CGRectMake(0,0,self.frame.size.width,[self privateTopYearMonthHeight]);
+        CGContextAddRect(context, rectangle);
+        CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+        CGContextFillPath(context);
+        
+        //Arrows
+        int arrowSize = 12;
+        int xmargin = 20;
+        int ymargin = 18;
+        
+        //Arrow Left
+        CGContextBeginPath(context);
+        CGContextMoveToPoint(context, xmargin+arrowSize/1.5, ymargin);
+        CGContextAddLineToPoint(context,xmargin+arrowSize/1.5,ymargin+arrowSize);
+        CGContextAddLineToPoint(context,xmargin,ymargin+arrowSize/2);
+        CGContextAddLineToPoint(context,xmargin+arrowSize/1.5, ymargin);
+        
+        CGContextSetFillColorWithColor(context,
+                                       [UIColor blackColor].CGColor);
+        CGContextFillPath(context);
+        
+        //Arrow right
+        CGContextBeginPath(context);
+        CGContextMoveToPoint(context, self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
+        CGContextAddLineToPoint(context,self.frame.size.width-xmargin,ymargin+arrowSize/2);
+        CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5),ymargin+arrowSize);
+        CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
+        
+        CGContextSetFillColorWithColor(context,
+                                       [UIColor blackColor].CGColor);
+        CGContextFillPath(context);
+    }
     
-    //Arrows
-    int arrowSize = 12;
-    int xmargin = 20;
-    int ymargin = 18;
-    
-    //Arrow Left
-    CGContextBeginPath(context);
-    CGContextMoveToPoint(context, xmargin+arrowSize/1.5, ymargin);
-    CGContextAddLineToPoint(context,xmargin+arrowSize/1.5,ymargin+arrowSize);
-    CGContextAddLineToPoint(context,xmargin,ymargin+arrowSize/2);
-    CGContextAddLineToPoint(context,xmargin+arrowSize/1.5, ymargin);
-    
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor blackColor].CGColor);
-    CGContextFillPath(context);
-    
-    //Arrow right
-    CGContextBeginPath(context);
-    CGContextMoveToPoint(context, self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
-    CGContextAddLineToPoint(context,self.frame.size.width-xmargin,ymargin+arrowSize/2);
-    CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5),ymargin+arrowSize);
-    CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
-    
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor blackColor].CGColor);
-    CGContextFillPath(context);
-    
+//    [currentMonth firstWeekDayInMonth:self.firstDayOfWeekStyle];
+
     int numRows = [self numRows];
     
     CGContextSetAllowsAntialiasing(context, NO);
@@ -386,7 +441,7 @@
     CGContextMoveToPoint(context, 0, [self privateTopYearMonthHeight]+0.5);
     CGContextAddLineToPoint(context, [self privateCalenderWidth], [self privateTopYearMonthHeight]+0.5);
     CGContextStrokePath(context);
-    
+
     //Weekdays
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat=@"EEE";
@@ -407,7 +462,7 @@
         UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:12];
         [weekdayValue drawInRect:CGRectMake(i*([self privateCalendarViewDayWidth]+2), [self privateTopYearMonthHeight] + 1, [self privateCalendarViewDayWidth]+2, [self privateTopWeekBarHeight]) withFont:font lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
     }
-    
+
     //Grid white lines
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextBeginPath(context);
@@ -449,7 +504,6 @@
     //Draw days
     CGContextSetFillColorWithColor(context, 
                                    [UIColor colorWithHexString:@"0x383838"].CGColor);
-    
     
     //NSLog(@"currentMonth month = %i, first weekday in month = %i",[self.currentMonth month],[self.currentMonth firstWeekDayInMonth]);
     
@@ -525,6 +579,7 @@
         //draw selected date
         if (selectedDate && i==selectedDateBlock) {
             CGRect rectangleGrid = CGRectMake(targetX,targetY,[self privateCalendarViewDayWidth]+2,[self privateCalendarViewDayHeight]+2);
+            self.selectDateRect = rectangleGrid;
             CGContextAddRect(context, rectangleGrid);
             CGContextSetFillColorWithColor(context, kDefaultSelectedColor.CGColor);
             CGContextFillPath(context);
@@ -545,7 +600,6 @@
     }
     
     //    CGContextClosePath(context);
-    
     
     //Draw markings
     if (!self.markedDates || isSelectedDatePreviousMonth || isSelectedDateNextMonth) return;
@@ -620,19 +674,27 @@
         self.contentMode = UIViewContentModeTop;
         self.clipsToBounds=YES;
         self.firstDayOfWeekStyle = FirstDayOfWeekStyleMonday;
+        self.selectDayWithAnimation = YES;
+        _hidenYearMonthTitle = NO;
         
         isAnimating=NO;
+        
+        [self performSelector:@selector(reset) withObject:nil afterDelay:0.1]; //so delegate can be set after init and still get called on init
+//        [self reset];
+    }
+    return self;
+}
+
+- (void)setHidenYearMonthTitle:(BOOL)hidenYearMonthTitle {
+    if (!hidenYearMonthTitle) {
         self.labelCurrentMonth = [[UILabel alloc] initWithFrame:CGRectMake(34, 0, [self privateCalenderWidth]-68, 40)];
         [self addSubview:labelCurrentMonth];
         labelCurrentMonth.backgroundColor=[UIColor whiteColor];
         labelCurrentMonth.font = [UIFont systemFontOfSize:17];//[UIFont fontWithName:@"HelveticaNeue-Bold" size:17];
         labelCurrentMonth.textColor = [UIColor colorWithHexString:@"0x383838"];
         labelCurrentMonth.textAlignment = UITextAlignmentCenter;
-        
-        [self performSelector:@selector(reset) withObject:nil afterDelay:0.1]; //so delegate can be set after init and still get called on init
-//        [self reset];
     }
-    return self;
+    _hidenYearMonthTitle = hidenYearMonthTitle;
 }
 
 @end

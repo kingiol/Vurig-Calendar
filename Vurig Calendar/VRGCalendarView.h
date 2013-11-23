@@ -14,7 +14,7 @@
 
 #define kVRGCalendarViewTopYearMonthBarHeight 40
 #define kVRGCalendarViewWidth 320
-#define kVRGCalendarViewTopWeekBarHeight 20
+#define kVRGCalendarViewTopWeekBarHeight 22
 
 #define kVRGCalendarViewDayWidth 44
 #define kVRGCalendarViewDayHeight 44
@@ -59,6 +59,8 @@
 @property (nonatomic, assign) FirstDayOfWeekStyle firstDayOfWeekStyle;
 @property (nonatomic, strong) NSArray *weekTitleColor;
 @property (nonatomic, strong) UIColor *yearAndMonthTitleColor;
+@property (nonatomic, assign) BOOL selectDayWithAnimation;  //default YES
+@property (nonatomic, assign) BOOL hidenYearMonthTitle;   //default NO
 
 -(void)selectDate:(int)date;
 -(void)reset;

@@ -12,21 +12,71 @@
 
 @end
 
-@implementation VRGViewController
+@implementation VRGViewController {
+    VRGCalendarView *calendar;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
+    calendar = [[VRGCalendarView alloc] init];
     calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
     NSArray *ary = @[[UIColor redColor], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [UIColor redColor]];
     calendar.weekTitleColor = ary;
     calendar.yearAndMonthTitleColor = [UIColor redColor];
+    calendar.hidenYearMonthTitle = YES;
     calendar.delegate=self;
+//    calendar.selectDayWithAnimation = NO;
 //    calendar.frame = CGRectMake(20, 20, 320 - 40, 300);
     [self.view addSubview:calendar];
+    
+    UIButton *preBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 400, 50, 20)];
+    preBtn.backgroundColor = [UIColor redColor];
+    [preBtn setTitle:@"pre" forState:UIControlStateNormal];
+    preBtn.tag = 1;
+    [preBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:preBtn];
+    
+    UIButton *sBtn = [[UIButton alloc] initWithFrame:CGRectMake(60, 400, 50, 20)];
+    sBtn.backgroundColor = [UIColor redColor];
+    [sBtn setTitle:@"show" forState:UIControlStateNormal];
+    sBtn.tag = 2;
+    [sBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sBtn];
+    
+    UIButton *nBtn = [[UIButton alloc] initWithFrame:CGRectMake(120, 400, 50, 20)];
+    nBtn.backgroundColor = [UIColor redColor];
+    [nBtn setTitle:@"next" forState:UIControlStateNormal];
+    nBtn.tag = 3;
+    [nBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:nBtn];
+}
+
+- (void)btnClick:(UIButton *)btn {
+    switch (btn.tag) {
+        case 1: // pre
+        {
+            [calendar showPreviousMonth];
+        }
+            break;
+            
+        case 2: // show
+        {
+            NSLog(@"height : %f", calendar.frame.size.height);
+        }
+            break;
+            
+        case 3: // next
+        {
+            [calendar showNextMonth];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 
