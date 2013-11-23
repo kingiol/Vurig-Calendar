@@ -6,15 +6,30 @@ Easy to use, simple, clean.
 
 Also animated :-)
 
+#### Add new features by kingiol.
+
+* custom weektitle color
+* support for monday or sunday first show
+* custom yearAndMonthTitleColor
+* change select date with animation
+* show or hiden yearMonthTitleView
+
 ### Installation
 Copy the files from the calendar group to your own project.
 
 ### Usage
-<pre>
+```
 VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
 calendar.delegate=self;
+calendar.firstDayOfWeekStyle = FirstDayOfWeekStyleSunday;
+NSArray *ary = @[[UIColor redColor], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [UIColor redColor]];
+calendar.weekTitleColor = ary;
+calendar.yearAndMonthTitleColor = [UIColor redColor];
+calendar.hidenYearMonthTitle = YES;
+calendar.delegate=self;
+calendar.selectDayWithAnimation = NO;
 [self.view addSubview:calendar];
-</pre>
+```
 
 ##Delegate methods
 ####Selecting days
@@ -25,7 +40,7 @@ Whenever a user selects a date, the following method will be called:
 ####Switching months
 This delegate method will be called whenever a user switches to the next or previous month.  
 <pre>
--(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated;
+-(void)calendarView:(VRGCalendarView *)calendarView switchedToDate:(NSDate *)toDate targetHeight:(float)targetHeight animated:(BOOL)animated;
 </pre>
 With the way the calendar layouts work, the number of rows (and thus the height) can vary. You can react to this change by using the targetHeight parameter.
 

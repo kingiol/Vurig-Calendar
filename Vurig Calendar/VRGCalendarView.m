@@ -161,7 +161,8 @@
     
     //New month
     self.currentMonth = [currentMonth offsetMonth:1];
-    if ([delegate respondsToSelector:@selector(calendarView:switchedToDate:targetHeight: animated:)]) [delegate calendarView:self switchedToDate:currentMonth targetHeight:self.calendarHeight animated:YES];
+    if ([delegate respondsToSelector:@selector(calendarView:switchedToDate:targetHeight: animated:)])
+        [delegate calendarView:self switchedToDate:currentMonth targetHeight:self.calendarHeight animated:YES];
     prepAnimationNextMonth=NO;
     [self setNeedsDisplay];
     

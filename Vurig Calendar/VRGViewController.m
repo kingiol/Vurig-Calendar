@@ -28,7 +28,7 @@
     calendar.yearAndMonthTitleColor = [UIColor redColor];
     calendar.hidenYearMonthTitle = YES;
     calendar.delegate=self;
-//    calendar.selectDayWithAnimation = NO;
+    calendar.selectDayWithAnimation = NO;
 //    calendar.frame = CGRectMake(20, 20, 320 - 40, 300);
     [self.view addSubview:calendar];
     
